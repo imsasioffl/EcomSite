@@ -83,7 +83,7 @@ public class CartPage {
         monthInput.sendKeys(month);
         yearInput.sendKeys(year);
         purchaseBtn.click();
-        System.out.println("submitted form ...");
+        System.out.println("submitted form. ...");
 
         // Wait for confirmation message
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));

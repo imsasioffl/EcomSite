@@ -25,7 +25,7 @@ public class stepDefinition {
 
     public static String generateRandomName() {
         String[] firstNames = {
-                "Alex", "Sam", "Jordan", "Taylor", "Chris",
+                "Alexa", "Sam", "Jordan", "Taylor", "Chris",
                 "Jamie", "Morgan", "Riley", "Casey", "Avery"
         };
 
