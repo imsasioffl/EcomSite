@@ -50,7 +50,7 @@ public class DriverUtils {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             String originalStyle = element.getAttribute("style");
             js.executeScript("arguments[0].setAttribute('style', arguments[1]);",
-                    element, "border: 3px solid red; background-color: yellow;");
+                    element, "border: 3px solid green;");
             // Optional pause so highlight is visible
             Thread.sleep(300);
             js.executeScript("arguments[0].setAttribute('style', arguments[1]);", element, originalStyle);
@@ -70,4 +70,12 @@ public class DriverUtils {
         }
     }
 
+    public static boolean isElementPresent(WebDriver driver, WebElement element) {
+        try {
+            element.isDisplayed();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

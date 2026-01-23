@@ -58,7 +58,7 @@ public class CartPage {
     public WebElement closeForm;
 
     // Logout
-    @FindBy(xpath = "//a[normalize-space(text())='Log out']")
+    @FindBy(id = "logout2")
     public WebElement logoutLink;
 
     public CartPage(WebDriver driver) {
@@ -67,6 +67,7 @@ public class CartPage {
     }
 
     // ===== Actions =====
+
 
     public void validateAndPlaceOrder() {
 
@@ -138,17 +139,21 @@ public class CartPage {
         purchaseOk.click();
         DriverUtils.takeScreenshot("26_click_ok");
 
-        // Close modal
-        DriverUtils.highlightElement(closeForm);
-        closeForm.click();
-        DriverUtils.takeScreenshot("27_close_order_modal");
+
+        // Close order modal ONLY if close button exists
+        if (DriverUtils.isElementPresent(driver, closeForm)) {
+            DriverUtils.highlightElement(closeForm);
+            closeForm.click();
+            DriverUtils.takeScreenshot("27_close_order_modal");
+        } else {
+            System.out.println("Order modal already closed. Skipping close button.");
+        }
+
 
         // Logout
         WebDriverWait logoutWait = new WebDriverWait(driver, Duration.ofSeconds(30));
         logoutWait.until(ExpectedConditions.visibilityOf(logoutLink));
 
-        DriverUtils.highlightElement(logoutLink);
         logoutLink.click();
-        DriverUtils.takeScreenshot("28_click_logout");
     }
 }
