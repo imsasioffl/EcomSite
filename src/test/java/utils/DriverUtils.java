@@ -1,11 +1,14 @@
 package utils;
 
 import lombok.Getter;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 
 public class DriverUtils {
@@ -21,6 +24,7 @@ public class DriverUtils {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
         driver.get("https://www.demoblaze.com/");
+
     }
 
     public static void quitDriver() {
@@ -37,6 +41,32 @@ public class DriverUtils {
             return text;
         } catch (Exception e) {
             return null; // No alert
+        }
+    }
+
+    public static void highlightElement(WebElement element) {
+        if (driver == null) return;
+        try {
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            String originalStyle = element.getAttribute("style");
+            js.executeScript("arguments[0].setAttribute('style', arguments[1]);",
+                    element, "border: 3px solid red; background-color: yellow;");
+            // Optional pause so highlight is visible
+            Thread.sleep(300);
+            js.executeScript("arguments[0].setAttribute('style', arguments[1]);", element, originalStyle);
+        } catch (Exception e) {
+            System.out.println("Could not highlight element: " + e.getMessage());
+        }
+    }
+
+    public static void takeScreenshot(String fileName) {
+        if (driver == null) return;
+        try {
+            File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            Files.createDirectories(Paths.get("screenshots")); // create folder if not exists
+            Files.copy(srcFile.toPath(), Paths.get("screenshots/" + fileName + ".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

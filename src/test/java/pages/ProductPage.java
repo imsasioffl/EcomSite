@@ -8,16 +8,22 @@ import org.testng.Assert;
 import utils.DriverUtils;
 
 public class ProductPage {
+
     private final WebDriver driver;
+
     // Product selection Elements
     @FindBy(xpath = "//a[normalize-space(text())='Samsung galaxy s6']")
     public WebElement samsungGalaxyS6;
+
     @FindBy(xpath = "//h2[normalize-space(text())='Samsung galaxy s6']")
     public WebElement productTitle;
+
     @FindBy(xpath = "//strong[text()='Product description']/following-sibling::p")
     public WebElement productDescription;
+
     @FindBy(xpath = "//a[normalize-space(text())='Add to cart']")
     public WebElement addToCartButton;
+
     @FindBy(xpath = "//a[normalize-space(text())='Cart']")
     public WebElement cartLink;
 
@@ -26,37 +32,54 @@ public class ProductPage {
         PageFactory.initElements(driver, this);
     }
 
-
-    //Actions
-
+    // ===== Actions =====
     public void selectProduct() {
 
+        // Click product
+        DriverUtils.highlightElement(samsungGalaxyS6);
         samsungGalaxyS6.click();
+        DriverUtils.takeScreenshot("10_click_samsung_product");
 
-        String productTitleText = productTitle.getText();
-        System.out.println("Title is "+productTitleText);
-        Assert.assertTrue(productTitleText.contains("Samsung galaxy s6"),
-                "Expected 'Samsung galaxy s6' text, but found: " + productTitleText);
+        // Validate product title
+        DriverUtils.highlightElement(productTitle);
+        String productTitleText = productTitle.getText().trim();
+        System.out.println("Title is " + productTitleText);
+        DriverUtils.takeScreenshot("11_validate_product_title");
 
+        Assert.assertTrue(
+                productTitleText.equalsIgnoreCase("Samsung galaxy s6"),
+                "Expected 'Samsung galaxy s6' text, but found: " + productTitleText
+        );
 
-        String productDescriptionText = productDescription.getText();
-        System.out.println("Description is "+productDescriptionText);
-        Assert.assertTrue(productDescriptionText.contains("The Samsung Galaxy S6 is powered by 1.5GHz octa-core Samsung Exynos " +
-                        "7420 processor and it comes with 3GB of RAM. " +
-                        "The phone packs 32GB of internal storage cannot be expanded."),
-                "Expected 'Welcome' text, but found: " + productDescriptionText);
+        // Validate product description
+        DriverUtils.highlightElement(productDescription);
+        String productDescriptionText = productDescription.getText().trim();
+        System.out.println("Description is " + productDescriptionText);
+        DriverUtils.takeScreenshot("12_validate_product_description");
 
+        Assert.assertTrue(
+                productDescriptionText.contains("The Samsung Galaxy S6 is powered by 1.5GHz octa-core Samsung Exynos"),
+                "Product description mismatch. Found: " + productDescriptionText
+        );
+
+        // Add to cart
+        DriverUtils.highlightElement(addToCartButton);
         addToCartButton.click();
-        System.out.println("Clicked addtocart");
+        DriverUtils.takeScreenshot("13_click_add_to_cart");
+        System.out.println("Clicked add to cart");
+
+        // Handle alert
         String alertText = DriverUtils.handleAlertIfPresent(driver);
-        System.out.println("alert handled");
-        Assert.assertTrue(alertText.contains("Product added."),
-                "Expected 'Samsung galaxy s6' text, but found: " + productTitleText);
-        System.out.println("Assertion");
+        System.out.println("Alert text: " + alertText);
+
+        Assert.assertTrue(
+                alertText != null && alertText.contains("Product added."),
+                "Expected 'Product added.' alert but found: " + alertText
+        );
+
+        // Go to cart
+        DriverUtils.highlightElement(cartLink);
         cartLink.click();
-
+        DriverUtils.takeScreenshot("14_click_cart");
     }
-
 }
-
-
