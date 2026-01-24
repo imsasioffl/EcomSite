@@ -8,7 +8,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 
 public class DriverUtils {
@@ -61,14 +63,26 @@ public class DriverUtils {
 
     public static void takeScreenshot(String fileName) {
         if (driver == null) return;
+
         try {
             File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            Files.createDirectories(Paths.get("screenshots")); // create folder if not exists
-            Files.copy(srcFile.toPath(), Paths.get("screenshots/" + fileName + ".png"));
+
+            Path screenshotDir = Paths.get("screenshots");
+            Files.createDirectories(screenshotDir);
+
+            Path destination = screenshotDir.resolve(fileName + ".png");
+
+            Files.copy(
+                    srcFile.toPath(),
+                    destination,
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Failed to take screenshot", e);
         }
     }
+
 
     public static boolean isElementPresent(WebDriver driver, WebElement element) {
         try {

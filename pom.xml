@@ -10,8 +10,10 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <java.version>17</java.version>
+    <selenium.version>4.18.1</selenium.version>
+    <cucumber.version>7.14.0</cucumber.version>
+    <testng.version>7.9.0</testng.version>
   </properties>
 
   <dependencies>
@@ -20,45 +22,70 @@
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
-      <version>4.17.0</version>
+      <version>${selenium.version}</version>
     </dependency>
 
     <!-- Cucumber -->
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-java</artifactId>
-      <version>7.14.0</version>
+      <version>${cucumber.version}</version>
     </dependency>
 
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-testng</artifactId>
-      <version>7.14.0</version>
+      <version>${cucumber.version}</version>
     </dependency>
 
     <!-- TestNG -->
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>7.9.0</version>
+      <version>${testng.version}</version>
     </dependency>
 
-    <!-- Extent Report -->
+    <!-- Logging (fixes SLF4J warning) -->
     <dependency>
-      <groupId>tech.grasshopper</groupId>
-      <artifactId>extentreports-cucumber7-adapter</artifactId>
-      <version>1.14.0</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.4.14</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.26</version>
+      <scope>provided</scope>
     </dependency>
 
   </dependencies>
 
   <build>
     <plugins>
+
+      <!-- Java compiler -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+
+      <!-- Test execution -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.2.5</version>
+        <configuration>
+          <includes>
+            <include>**/*Runner.java</include>
+          </includes>
+        </configuration>
       </plugin>
+
     </plugins>
   </build>
 
