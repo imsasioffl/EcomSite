@@ -1,6 +1,6 @@
 Feature: Add product to cart
 
-  Scenario: user completes a Registeration
+  Scenario: user completes a Registration
     Given the user is a registered user
 
   Scenario: Registered user completes a purchase
