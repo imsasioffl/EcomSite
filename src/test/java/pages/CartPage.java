@@ -68,16 +68,13 @@ public class CartPage {
 
     // ===== Actions =====
 
-
     public void validateAndPlaceOrder() {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.visibilityOf(CartText));
-        DriverUtils.takeScreenshot("15_cart_page_loaded");
 
         DriverUtils.highlightElement(cartProductName);
         String productTitle = cartProductName.getText();
-        DriverUtils.takeScreenshot("16_validate_cart_product");
 
         Assert.assertTrue(
                 productTitle.contains("Samsung galaxy s6"),
@@ -86,7 +83,6 @@ public class CartPage {
 
         DriverUtils.highlightElement(placeOrderButton);
         placeOrderButton.click();
-        DriverUtils.takeScreenshot("17_click_place_order");
     }
 
     public void checkout(String name, String country, String city,
@@ -95,31 +91,24 @@ public class CartPage {
         // Fill order form
         DriverUtils.highlightElement(nameInput);
         nameInput.sendKeys(name);
-        DriverUtils.takeScreenshot("18_enter_name");
 
         DriverUtils.highlightElement(countryInput);
         countryInput.sendKeys(country);
-        DriverUtils.takeScreenshot("19_enter_country");
 
         DriverUtils.highlightElement(cityInput);
         cityInput.sendKeys(city);
-        DriverUtils.takeScreenshot("20_enter_city");
 
         DriverUtils.highlightElement(cardInput);
         cardInput.sendKeys(cardNo);
-        DriverUtils.takeScreenshot("21_enter_card");
 
         DriverUtils.highlightElement(monthInput);
         monthInput.sendKeys(month);
-        DriverUtils.takeScreenshot("22_enter_month");
 
         DriverUtils.highlightElement(yearInput);
         yearInput.sendKeys(year);
-        DriverUtils.takeScreenshot("23_enter_year");
 
         DriverUtils.highlightElement(purchaseBtn);
         purchaseBtn.click();
-        DriverUtils.takeScreenshot("24_click_purchase");
 
         // Wait for confirmation
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
@@ -127,7 +116,6 @@ public class CartPage {
 
         DriverUtils.highlightElement(purchaseConfirmationMessage);
         String confirmationMessage = purchaseConfirmationMessage.getText();
-        DriverUtils.takeScreenshot("25_validate_confirmation_message");
 
         Assert.assertTrue(
                 confirmationMessage.contains("Thank you for your purchase!"),
@@ -137,18 +125,14 @@ public class CartPage {
         // Close confirmation
         DriverUtils.highlightElement(purchaseOk);
         purchaseOk.click();
-        DriverUtils.takeScreenshot("26_click_ok");
-
 
         // Close order modal ONLY if close button exists
         if (DriverUtils.isElementPresent(driver, closeForm)) {
             DriverUtils.highlightElement(closeForm);
             closeForm.click();
-            DriverUtils.takeScreenshot("27_close_order_modal");
         } else {
             System.out.println("Order modal already closed. Skipping close button.");
         }
-
 
         // Logout
         WebDriverWait logoutWait = new WebDriverWait(driver, Duration.ofSeconds(30));

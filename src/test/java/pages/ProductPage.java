@@ -38,13 +38,11 @@ public class ProductPage {
         // Click product
         DriverUtils.highlightElement(samsungGalaxyS6);
         samsungGalaxyS6.click();
-        DriverUtils.takeScreenshot("10_click_samsung_product");
 
         // Validate product title
         DriverUtils.highlightElement(productTitle);
         String productTitleText = productTitle.getText().trim();
-        System.out.println("Title is " + productTitleText);
-        DriverUtils.takeScreenshot("11_validate_product_title");
+        System.out.println("Actual Title : " + productTitleText);
 
         Assert.assertTrue(
                 productTitleText.equalsIgnoreCase("Samsung galaxy s6"),
@@ -54,8 +52,7 @@ public class ProductPage {
         // Validate product description
         DriverUtils.highlightElement(productDescription);
         String productDescriptionText = productDescription.getText().trim();
-        System.out.println("Description is " + productDescriptionText);
-        DriverUtils.takeScreenshot("12_validate_product_description");
+        System.out.println("Actual Description : " + productDescriptionText);
 
         Assert.assertTrue(
                 productDescriptionText.contains("The Samsung Galaxy S6 is powered by 1.5GHz octa-core Samsung Exynos"),
@@ -65,7 +62,6 @@ public class ProductPage {
         // Add to cart
         DriverUtils.highlightElement(addToCartButton);
         addToCartButton.click();
-        DriverUtils.takeScreenshot("13_click_add_to_cart");
         System.out.println("Clicked add to cart");
 
         // Handle alert
@@ -80,6 +76,5 @@ public class ProductPage {
         // Go to cart
         DriverUtils.highlightElement(cartLink);
         cartLink.click();
-        DriverUtils.takeScreenshot("14_click_cart");
     }
 }
