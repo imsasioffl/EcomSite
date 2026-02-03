@@ -65,7 +65,6 @@ public class stepDefinition {
         Assert.assertTrue(alertText != null && alertText.toLowerCase().contains("successful"),
                 "Expected alert to contain 'successful', but found: " + alertText);
 
-        // ✅ persist
         DriverUtils.saveUser(userName, password);
     }
 
