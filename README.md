@@ -13,13 +13,21 @@ This repository contains an automation framework for testing an E-commerce web a
 ## 📁 Project Structure
 src
 └── test
+
 ├── java
+
 │ ├── pages # POM classes
+
 │ ├── stepdefinitions # Cucumber step definitions
+
 │ ├── runners # Test runner classes
+
 │ └── utils # Helpers & driver utils
+
 └── resources
+
 ├── features # Cucumber .feature files
+
 └── testdata # JSON files (saved user data)
 
 
