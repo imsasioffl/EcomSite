@@ -55,26 +55,32 @@ public class stepDefinition {
 
     @Given("the user is a registered user")
     public void register() {
+
         userName = getUserName();
         password = getPassword();
-
-        System.out.println("Registering user: " + userName + " " + password);
 
         page.register(userName, password);
 
         String alertText = DriverUtils.handleAlertIfPresent(driver);
-        System.out.println(alertText);
-
         Assert.assertTrue(alertText != null && alertText.toLowerCase().contains("successful"),
                 "Expected alert to contain 'successful', but found: " + alertText);
+
+        // ✅ persist
+        DriverUtils.saveUser(userName, password);
     }
+
+
+
 
     @When("the user logs in")
     public void login() {
-        System.out.println("Logging in with: " + userName + " " + password);
 
-        page.Login(userName, password);
+        String user = DriverUtils.getValue("username");
+        String pass = DriverUtils.getValue("password");
+
+        page.Login(user, pass);
     }
+
 
     @And("adds a product to the cart")
     public void addProduct() {

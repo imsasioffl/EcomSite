@@ -1,22 +1,46 @@
 package utils;
 
+import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
-import org.openqa.selenium.*;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DriverUtils {
-
+    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final String FILE = "src/test/resources/user.json";
     @Getter
     private static WebDriver driver;
+
+    public static void saveUser(String username, String password) {
+        try {
+            Map<String, String> data = new HashMap<>();
+            data.put("username", username);
+            data.put("password", password);
+
+            mapper.writerWithDefaultPrettyPrinter()
+                    .writeValue(new File(FILE), data);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save user data", e);
+        }
+    }
+
+    public static String getValue(String key) {
+        try {
+            Map<?, ?> data = mapper.readValue(new File(FILE), Map.class);
+            return data.get(key).toString();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to read user data", e);
+        }
+    }
 
     public static void initDriver() {
 //        WebDriverManager.chromedriver().setup();
@@ -60,29 +84,6 @@ public class DriverUtils {
             System.out.println("Could not highlight element: " + e.getMessage());
         }
     }
-
-    public static void takeScreenshot(String fileName) {
-        if (driver == null) return;
-
-        try {
-            File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-
-            Path screenshotDir = Paths.get("screenshots");
-            Files.createDirectories(screenshotDir);
-
-            Path destination = screenshotDir.resolve(fileName + ".png");
-
-            Files.copy(
-                    srcFile.toPath(),
-                    destination,
-                    StandardCopyOption.REPLACE_EXISTING
-            );
-
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to take screenshot", e);
-        }
-    }
-
 
     public static boolean isElementPresent(WebDriver driver, WebElement element) {
         try {
